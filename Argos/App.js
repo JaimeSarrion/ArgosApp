@@ -4,9 +4,11 @@ import {
 } from 'react-navigation';
 
 import LoginForm from './src/components/LoginForm';
+import MenuPrincipal from './src/components/MenuPrincipal';
 
 const AppNavigator = createStackNavigator({
-  LoginFormScreen: {screen: LoginForm}
+  LoginFormScreen: {screen: LoginForm},
+  MenuPrincipalScreen: {screen: MenuPrincipal}
 },
   {
     defaultNavigationOptions: {

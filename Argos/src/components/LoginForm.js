@@ -25,7 +25,12 @@ class LoginForm extends React.Component {
         this.state = {
             User: '',
             Pass: '',
-            uri: "https://hidden-crag-54463.herokuapp.com"
+            uri: "https://hidden-crag-54463.herokuapp.com",
+            db: {
+                user: 'a',
+                pass: 'a'
+            }
+
         };
     }
     
@@ -61,9 +66,39 @@ class LoginForm extends React.Component {
         );
     }
 
+    /*
+    *   Author: Jaime Sarrión
+    *   Method: btnLogin
+    *   Description: Creates an alert when the user is incorrect
+    */ 
     btnLogin = () => {
+        const mythis = this;
+        this.compruebaCredenciales(function(responseJSON){
+            if(responseJSON.Login == true){
+                mythis.props.navigation.navigate('MenuPrincipalScreen')
+            }else{
+                Alert.alert(
+                    'Usuario o contraseña incorrecta',
+                    '',
+                    [
+                        { text: 'OK', onPress: mythis.btnOK }
+                    ]
+                )
+            }
+        })
 
+    }
 
+    /*
+    *   Author: Jaime Sarrión
+    *   Method: compruebaCredenciales
+    *   Description: Test if the user is in the database
+    */ 
+    compruebaCredenciales = (callback, callbackError) =>{
+        const responseJSON = {
+            Login: true
+        }
+        callback(responseJSON)
     }
 }
 
