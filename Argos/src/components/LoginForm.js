@@ -11,6 +11,7 @@ import {
     Alert,
 } from 'react-native';
 
+
 class LoginForm extends React.Component {
     static navigationOptions = {
         title: 'Bienvenido a Argos',
@@ -71,6 +72,7 @@ class LoginForm extends React.Component {
     *   Method: btnLogin
     *   Description: Creates an alert when the user is incorrect
     */ 
+
     btnLogin = () => {
         const mythis = this;
         this.compruebaCredenciales(function(responseJSON){
