@@ -50,10 +50,13 @@ class LoginForm extends React.Component {
                     <TextInput
                         style={styles.txtInputs}
                         value={this.state.Pass}
+                        visible-password='false'
                         placeholder='Contraseña'
                         placeholderTextColor='black'
                         onChangeText={(contrasena) => this.setState({ Pass: contrasena })}>
                     </TextInput>  
+                    <Text>Eres nuevo? Haz click <Text style={{color:'blue'}}
+                                                    onPress={()=> this.goToRegistro()}>aquí</Text> </Text>
                 </View> 
 
                 <View style={styles.bottom}>
@@ -102,6 +105,10 @@ class LoginForm extends React.Component {
         }
         callback(responseJSON)
     }
+
+    goToRegistro = () => {
+        this.props.navigation.navigate('RegistroFormScreen')
+    }
 }
 
 
@@ -109,14 +116,14 @@ const styles = StyleSheet.create({
     form:{
         flex: 1,
         flexDirection: 'column',
-        backgroundColor: '#800000'
+        //backgroundColor: '#800000'
     },
     container:{
         height: '80%',
         justifyContent: 'center',
         alignContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#D2691E'
+       // backgroundColor: '#D2691E'
     },
     bottom:{
         height: '20%',

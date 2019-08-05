@@ -5,10 +5,12 @@ import {
 
 import LoginForm from './src/components/LoginForm';
 import MenuPrincipal from './src/components/MenuPrincipal';
+import RegistroForm from './src/components/RegistroForm'
 
 const AppNavigator = createStackNavigator({
   LoginFormScreen: {screen: LoginForm},
-  MenuPrincipalScreen: {screen: MenuPrincipal}
+  MenuPrincipalScreen: {screen: MenuPrincipal},
+  RegistroFormScreen: {screen: RegistroForm},
 },
   {
     defaultNavigationOptions: {
