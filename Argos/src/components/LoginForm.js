@@ -5,6 +5,7 @@ import { fetch } from 'fetch-awesome';
 import {
     StyleSheet,
     Text,
+    AsyncStorage,
     View,
     TouchableHighlight,
     TextInput,
@@ -23,11 +24,6 @@ class LoginForm extends React.Component {
             User: '',
             Pass: '',
             uri: 'http://jaimesarrion.freemyip.com:10000',
-            db: {
-                user: 'a',
-                pass: 'a'
-            }
-
         };
     }
     
@@ -42,7 +38,7 @@ class LoginForm extends React.Component {
                         value={this.state.User}
                         placeholder='Email'
                         underlineColorAndroid='transparent'
-                        onChangeText={(username) => this.setState({ User: username })}>
+                        onChangeText={(email) => this.setState({ User: email })}>
                     </TextInput>
                     <TextInput
                         style={styles.txtInputs}
@@ -58,7 +54,7 @@ class LoginForm extends React.Component {
                     <TouchableHighlight
                         onPress={this.btnLogin}
                         style={styles.boton} title="Aceptar">
-                        <Text style={styles.textoBoton}>Aceptar</Text>
+                        <Text style={styles.textoBoton}>Log in</Text>
                     </TouchableHighlight>
                 </View> 
             </View>
@@ -68,21 +64,39 @@ class LoginForm extends React.Component {
     /*
     *   Author: Jaime Sarrión
     *   Method: btnLogin
-    *   Description: Creates an alert when the user is incorrect
+    *   Description: Action from the login button
     */ 
-
     btnLogin = () => {
         this.login(function(response){
-            console.log(response[0])
+            let user = response[0]
+            if (!user.error) {
+                AsyncStorage.setItem('user', JSON.stringify(user))
+            }else{
+                Alert.alert(
+                    'Error',
+                    'Ha habido un problema en la base de datos',
+                    [
+                      {text: 'OK', onPress: () => console.log('OK Pressed')},
+                    ],
+                    {cancelable: false},
+                  );
+            }
         }, function(error){
-            console.log("ERROR: " + error)
+            Alert.alert(
+                'Error',
+                'Los datos proporcionados no son correctos',
+                [
+                  {text: 'OK', onPress: () => console.log('OK Pressed')},
+                ],
+                {cancelable: false},
+              );
         })
     }
 
     /*
     *   Author: Jaime Sarrión
-    *   Method: compruebaCredenciales
-    *   Description: Test if the user is in the database
+    *   Method: login
+    *   Description: Call for log in at the API
     */ 
     login = (callback, callbackError) =>{
         return fetch(this.state.uri + '/login',{
@@ -91,8 +105,8 @@ class LoginForm extends React.Component {
                 'Content-Type' : 'application/json' 
             },
             body: JSON.stringify ({
-                email: 'jaime@gmail.com',
-                password: 'contraseña'
+                email: this.state.User,
+                password: this.state.Pass
             }),
             timeout: 5000,
             retries: 0
@@ -101,11 +115,14 @@ class LoginForm extends React.Component {
         }).then((response)=>{
             callback(response)
         }).catch(function(error){
-            console.log('Algo salio mal...')
             callbackError(error)
         })
     }
-
+    /*
+    *   Author: Jaime Sarrión
+    *   Method: goToRegistro
+    *   Description: Go to the register screen
+    */ 
     goToRegistro = () => {
         this.props.navigation.navigate('RegistroFormScreen')
     }
@@ -141,7 +158,7 @@ const styles = StyleSheet.create({
         alignSelf: 'stretch',
         padding: 20,
         alignItems:'center',
-        backgroundColor: '#FFF0B5',
+        backgroundColor: '#01c853',
     }
 
 });
