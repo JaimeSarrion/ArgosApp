@@ -21,8 +21,8 @@ class LoginForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            User: '',
-            Pass: '',
+            User: 'jaime@gmail.com',
+            Pass: 'contraseña',
             uri: 'http://jaimesarrion.freemyip.com:10000',
         };
     }
@@ -161,7 +161,7 @@ const styles = StyleSheet.create({
         alignSelf: 'stretch',
         padding: 20,
         alignItems:'center',
-        backgroundColor: '#01c853',
+        backgroundColor: '#3ED07B',
     }
 
 });

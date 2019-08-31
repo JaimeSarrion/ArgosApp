@@ -15,12 +15,14 @@ class RegistroForm extends React.Component {
     constructor(props){
         super(props)
         this.state = {
-            nombre: '',
-            apellidos: '',
-            email: '',
-            dni: '',
-            password: '',
-            confirmacion: ''
+            nombre: 'a',
+            apellidos: 'a',
+            email: 'a',
+            dni: 'a',
+            password: 'a',
+            confirmacion: 'a',
+            uri: 'http://jaimesarrion.freemyip.com:10000'
+
         }
     }
     static navigationOptions = {
@@ -90,54 +92,46 @@ class RegistroForm extends React.Component {
         const mythis = this
         if (this.state.confirmacion == this.state.password) {
             if (this.state.nombre != '' && this.state.apellidos != '' && this.state.dni != '' && this.state.email != '' && this.state.password != '' ) {
+                let existe = false
                 this.compruebaUsuario(function(response){
-                    console.log(response) 
+                    console.log(response.error)
                     if (response.error) {
-                        this.registraUsuario(function(response){
-                            if (!response.error) {
-                                AsyncStorage.setItem('user', JSON.stringify(user ={
-                                    User: this.state.email,
-                                    Pass: this.state.password
-                                }))
-                                mythis.props.navigation.navigate('MenuPrincipalScreen')
+                        existe = true
+                    }
+                }, function(error){
+                    console.log(error)
+                }).then(function(){
+                    if (existe) {
+                        mythis.registraUsuario(function(response){
+                            if(response.OK){
                                 Alert.alert(
                                     'OK',
-                                    'Te has registrado con exito',
+                                    response.OK,
                                     [
-                                      {text: 'OK', onPress: () => {}},
+                                      {text: 'OK', onPress: () => {
+                                          let user = {
+                                              id: '',
+                                              emai: ''
+                                          }
+                                        AsyncStorage.setItem('user', JSON.stringify(user)).then(()=>{
+                                            mythis.props.navigation.navigate('MenuPrincipalScreen')
+                                        })
+                                    }},
                                     ],
                                     {cancelable: false},
                                   );
                             }
-                        },function(error){
-                            Alert.alert(
-                                'Error',
-                                'Se ha producido un error en el servidor, intentalo mas tarde',
-                                [
-                                  {text: 'OK', onPress: () => {}},
-                                ],
-                                {cancelable: false},
-                              );
-                        })
-                    }else{
+                        },()=>console.log("Error al registrar el usuario"))
+                    }else {
                         Alert.alert(
                             'Error',
-                            'El usuario ya esta en la BD',
+                            'El usuario ya esta en la base de datos',
                             [
                               {text: 'OK', onPress: () => {}},
                             ],
                             {cancelable: false},
                           );
                     }
-                },function(error){
-                    Alert.alert(
-                        'Error',
-                        'Se ha producido un error en el servidor, intentalo mas tarde',
-                        [
-                          {text: 'OK', onPress: () => {}},
-                        ],
-                        {cancelable: false},
-                      );
                 })
             }else{
                 Alert.alert(
@@ -166,6 +160,7 @@ class RegistroForm extends React.Component {
     }
 
     compruebaUsuario = (callback, callbackError)=>{
+        console.log("Buscando usuario...")
         return fetch(this.state.uri + '/login',{
             method: 'POST',
             headers: {
@@ -187,6 +182,7 @@ class RegistroForm extends React.Component {
     }
 
     registraUsuario = (callback, callbackError) => {
+        console.log("Intentando registrar al usuario") 
         return fetch(this.state.uri + '/registro',{
             method: 'POST',
             headers: {
@@ -204,6 +200,7 @@ class RegistroForm extends React.Component {
         }).then((data)=> {
             return data.json()
         }).then((response)=>{
+            console.log(response)
             callback(response)
         }).catch(function(error){
             callbackError(error)
@@ -240,7 +237,7 @@ const styles = StyleSheet.create({
         alignSelf: 'stretch',
         padding: 20,
         alignItems:'center',
-        backgroundColor: '#01c853',
+        backgroundColor: '#fbd37e',
     }
 
 });
