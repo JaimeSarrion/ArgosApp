@@ -111,7 +111,8 @@ class RegistroForm extends React.Component {
                                       {text: 'OK', onPress: () => {
                                           let user = {
                                               id: '',
-                                              emai: ''
+                                              emai: '',
+                                              token: ''
                                           }
                                         AsyncStorage.setItem('user', JSON.stringify(user)).then(()=>{
                                             mythis.props.navigation.navigate('MenuPrincipalScreen')
