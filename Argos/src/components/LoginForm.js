@@ -37,13 +37,13 @@ class LoginForm extends React.Component {
                         style={styles.txtInputs}
                         value={this.state.User}
                         placeholder='Email'
+                        autoCapitalize="none"
                         underlineColorAndroid='transparent'
                         onChangeText={(email) => this.setState({ User: email })}>
                     </TextInput>
                     <TextInput
                         style={styles.txtInputs}
                         value={this.state.Pass}
-                        visible-password='false'
                         placeholder='Contraseña'
                         underlineColorAndroid='transparent'
                         onChangeText={(contrasena) => this.setState({ Pass: contrasena })}>
@@ -67,10 +67,13 @@ class LoginForm extends React.Component {
     *   Description: Action from the login button
     */ 
     btnLogin = () => {
+        const mythis = this
         this.login(function(response){
             let user = response[0]
             if (!user.error) {
-                AsyncStorage.setItem('user', JSON.stringify(user))
+                AsyncStorage.setItem('user', JSON.stringify(user)).then(()=>{
+                    mythis.props.navigation.navigate('MenuPrincipalScreen')
+                })
             }else{
                 Alert.alert(
                     'Error',

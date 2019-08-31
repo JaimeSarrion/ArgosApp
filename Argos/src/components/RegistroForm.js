@@ -49,6 +49,7 @@ class RegistroForm extends React.Component {
                         style={styles.txtInputs}
                         value={this.state.email}
                         placeholder='email'
+                        autoCapitalize="none"
                         underlineColorAndroid='transparent'
                         onChangeText={(data) => this.setState({ email: data })}>
                     </TextInput>
@@ -63,6 +64,7 @@ class RegistroForm extends React.Component {
                         style={styles.txtInputs}
                         value={this.state.password}
                         placeholder='password'
+                        autoCapitalize="none"
                         underlineColorAndroid='transparent'
                         onChangeText={(data) => this.setState({ password: data })}>
                     </TextInput>
@@ -70,6 +72,7 @@ class RegistroForm extends React.Component {
                         style={styles.txtInputs}
                         value={this.state.confirmacion}
                         placeholder='Repite contraseña'
+                        autoCapitalize="none"
                         underlineColorAndroid='transparent'
                         onChangeText={(data) => this.setState({ confirmacion: data })}>
                     </TextInput>
@@ -84,21 +87,127 @@ class RegistroForm extends React.Component {
     }
 
     btnRegistro = () =>{
+        const mythis = this
         if (this.state.confirmacion == this.state.password) {
-            
+            if (this.state.nombre != '' && this.state.apellidos != '' && this.state.dni != '' && this.state.email != '' && this.state.password != '' ) {
+                this.compruebaUsuario(function(response){
+                    console.log(response) 
+                    if (response.error) {
+                        this.registraUsuario(function(response){
+                            if (!response.error) {
+                                AsyncStorage.setItem('user', JSON.stringify(user ={
+                                    User: this.state.email,
+                                    Pass: this.state.password
+                                }))
+                                mythis.props.navigation.navigate('MenuPrincipalScreen')
+                                Alert.alert(
+                                    'OK',
+                                    'Te has registrado con exito',
+                                    [
+                                      {text: 'OK', onPress: () => {}},
+                                    ],
+                                    {cancelable: false},
+                                  );
+                            }
+                        },function(error){
+                            Alert.alert(
+                                'Error',
+                                'Se ha producido un error en el servidor, intentalo mas tarde',
+                                [
+                                  {text: 'OK', onPress: () => {}},
+                                ],
+                                {cancelable: false},
+                              );
+                        })
+                    }else{
+                        Alert.alert(
+                            'Error',
+                            'El usuario ya esta en la BD',
+                            [
+                              {text: 'OK', onPress: () => {}},
+                            ],
+                            {cancelable: false},
+                          );
+                    }
+                },function(error){
+                    Alert.alert(
+                        'Error',
+                        'Se ha producido un error en el servidor, intentalo mas tarde',
+                        [
+                          {text: 'OK', onPress: () => {}},
+                        ],
+                        {cancelable: false},
+                      );
+                })
+            }else{
+                Alert.alert(
+                    'Error',
+                    'Se tienen que rellenar todos los datos',
+                    [
+                      {text: 'OK', onPress: () => {}},
+                    ],
+                    {cancelable: false},
+                  );
+            }
         }else{
             Alert.alert(
                 'Error',
                 'Las contraseñas no coinciden',
                 [
-                  {text: 'OK', onPress: () => {
-                        this.setState(password, '')
-                        this.setState(confirmacion, '')
-                    }},
+                  {text: 'OK', onPress: () => {}},
                 ],
                 {cancelable: false},
               );
         }
+    }
+
+    alerta = function name(params) {
+        return ''
+    }
+
+    compruebaUsuario = (callback, callbackError)=>{
+        return fetch(this.state.uri + '/login',{
+            method: 'POST',
+            headers: {
+                'Content-Type' : 'application/json' 
+            },
+            body: JSON.stringify ({
+                email: this.state.email,
+                password: this.state.password
+            }),
+            timeout: 5000,
+            retries: 0
+        }).then((data)=> {
+            return data.json()
+        }).then((response)=>{
+            callback(response)
+        }).catch(function(error){
+            callbackError(error)
+        })
+    }
+
+    registraUsuario = (callback, callbackError) => {
+        return fetch(this.state.uri + '/registro',{
+            method: 'POST',
+            headers: {
+                'Content-Type' : 'application/json' 
+            },
+            body: JSON.stringify ({
+                nombre: this.state.nombre,
+                apellidos: this.state.apellidos,
+                dni: this.state.dni,
+                email: this.state.email,
+                password: this.state.password
+            }),
+            timeout: 5000,
+            retries: 0
+        }).then((data)=> {
+            return data.json()
+        }).then((response)=>{
+            callback(response)
+        }).catch(function(error){
+            callbackError(error)
+        })
     }
 }
 
