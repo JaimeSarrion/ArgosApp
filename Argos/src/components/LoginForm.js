@@ -5,6 +5,7 @@ import { fetch } from 'fetch-awesome';
 import {
     StyleSheet,
     Text,
+    AsyncStorage,
     View,
     TouchableHighlight,
     TextInput,
@@ -14,55 +15,48 @@ import {
 
 class LoginForm extends React.Component {
     static navigationOptions = {
-        title: 'Bienvenido a Argos',
-        headerTitleStyle:{
-            fontWeight: 'bold',
-            color: 'black'
-        }
+        header: null,
     };
 
     constructor(props) {
         super(props);
         this.state = {
-            User: '',
-            Pass: '',
-            uri: "https://hidden-crag-54463.herokuapp.com",
-            db: {
-                user: 'a',
-                pass: 'a'
-            }
-
+            User: 'jaime@gmail.com',
+            Pass: 'contraseña',
+            uri: 'http://jaimesarrion.freemyip.com:10000',
         };
     }
     
     render() {
         return (
             
-            <View style={styles.form}>
+            <View style={styles.wrapper}>
                 <View style={styles.container}>
+                    <Text style={styles.header}>- LOGIN -</Text>
                     <TextInput
                         style={styles.txtInputs}
                         value={this.state.User}
-                        placeholder='Usuario'
-                        placeholderTextColor='black'
-                        onChangeText={(username) => this.setState({ User: username })}>
+                        placeholder='Email'
+                        autoCapitalize="none"
+                        underlineColorAndroid='transparent'
+                        onChangeText={(email) => this.setState({ User: email })}>
                     </TextInput>
                     <TextInput
                         style={styles.txtInputs}
                         value={this.state.Pass}
                         placeholder='Contraseña'
-                        placeholderTextColor='black'
+                        underlineColorAndroid='transparent'
                         onChangeText={(contrasena) => this.setState({ Pass: contrasena })}>
                     </TextInput>  
-                </View> 
-
-                <View style={styles.bottom}>
+                    <Text>Eres nuevo? Haz click <Text style={{color:'blue'}}
+                                                    onPress={()=> this.goToRegistro()}>aquí</Text> 
+                    </Text>
                     <TouchableHighlight
                         onPress={this.btnLogin}
                         style={styles.boton} title="Aceptar">
-                        <Text style={styles.textoBoton}>Aceptar</Text>
+                        <Text style={styles.textoBoton}>Log in</Text>
                     </TouchableHighlight>
-                </View>
+                </View> 
             </View>
         );
     }
@@ -70,80 +64,104 @@ class LoginForm extends React.Component {
     /*
     *   Author: Jaime Sarrión
     *   Method: btnLogin
-    *   Description: Creates an alert when the user is incorrect
+    *   Description: Action from the login button
     */ 
-
     btnLogin = () => {
-        const mythis = this;
-        this.compruebaCredenciales(function(responseJSON){
-            if(responseJSON.Login == true){
-                mythis.props.navigation.navigate('MenuPrincipalScreen')
+        const mythis = this
+        this.login(function(response){
+            let user = response[0]
+            if (!user.error) {
+                AsyncStorage.setItem('user', JSON.stringify(user)).then(()=>{
+                    mythis.props.navigation.navigate('MenuPrincipalScreen')
+                })
             }else{
                 Alert.alert(
-                    'Usuario o contraseña incorrecta',
-                    '',
+                    'Error',
+                    'Ha habido un problema en la base de datos',
                     [
-                        { text: 'OK', onPress: mythis.btnOK }
-                    ]
-                )
+                      {text: 'OK', onPress: () => console.log('OK Pressed')},
+                    ],
+                    {cancelable: false},
+                  );
             }
+        }, function(error){
+            Alert.alert(
+                'Error',
+                'Los datos proporcionados no son correctos',
+                [
+                  {text: 'OK', onPress: () => console.log('OK Pressed')},
+                ],
+                {cancelable: false},
+              );
         })
-
     }
 
     /*
     *   Author: Jaime Sarrión
-    *   Method: compruebaCredenciales
-    *   Description: Test if the user is in the database
+    *   Method: login
+    *   Description: Call for log in at the API
     */ 
-    compruebaCredenciales = (callback, callbackError) =>{
-        const responseJSON = {
-            Login: true
-        }
-        callback(responseJSON)
+    login = (callback, callbackError) =>{
+        return fetch(this.state.uri + '/login',{
+            method: 'POST',
+            headers: {
+                'Content-Type' : 'application/json' 
+            },
+            body: JSON.stringify ({
+                email: this.state.User,
+                password: this.state.Pass
+            }),
+            timeout: 5000,
+            retries: 0
+        }).then((data)=> {
+            return data.json()
+        }).then((response)=>{
+            callback(response)
+        }).catch(function(error){
+            callbackError(error)
+        })
+    }
+    /*
+    *   Author: Jaime Sarrión
+    *   Method: goToRegistro
+    *   Description: Go to the register screen
+    */ 
+    goToRegistro = () => {
+        this.props.navigation.navigate('RegistroFormScreen')
     }
 }
 
 
 const styles = StyleSheet.create({
-    form:{
-        flex: 1,
-        flexDirection: 'column',
-        backgroundColor: '#800000'
+
+    wrapper:{
+        flex: 1
+    },
+    header:{
+        fontSize: 24,
+        marginBottom: 60,
+        color: '#fff',
+        fontWeight: 'bold'
     },
     container:{
-        height: '80%',
-        justifyContent: 'center',
-        alignContent: 'center',
+        flex: 1,
         alignItems: 'center',
-        backgroundColor: '#D2691E'
+        justifyContent: 'center',
+        backgroundColor: '#2893d3',
+        paddingLeft: 40,
+        paddingRight: 40,
     },
-    bottom:{
-        height: '20%',
-        alignItems:'center',
-        justifyContent:'center'
+    txtInputs: {
+        alignSelf: 'stretch',
+        padding: 16,
+        marginBottom: 20,
+        backgroundColor: '#fff'
     },
     boton: {
-        width: 300,
-        height: 60,
-        backgroundColor: '#F1C40F',
-        alignItems: 'center',
-        justifyContent:'center',
-        borderRadius: 10,
-        borderWidth: 1
-    },
-
-    txtInputs: {
-        height: 60,
-        width: 250,
-        alignItems: 'center',
-        justifyContent: 'center',
-        alignContent: 'center',
+        alignSelf: 'stretch',
         padding: 20,
-        borderRadius: 10,
-        borderWidth: 1,
-        backgroundColor: '#F1C40F',
-        margin: 10,
+        alignItems:'center',
+        backgroundColor: '#3ED07B',
     }
 
 });
