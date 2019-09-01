@@ -22,9 +22,13 @@ class ListadoPacientes extends React.Component {
 
     constructor(props){
         super(props)
+        this.state = {
+            uri: 'http://jaimesarrion.freemyip.com:10000',
+
+        }
     }
 
-    componentDidMount(){
+    componentWillMount(){
         AsyncStorage.getItem('user').then((data)=>{
             let user = JSON.parse(data)
             fetch(this.state.uri + '/pacientes',{
@@ -37,24 +41,22 @@ class ListadoPacientes extends React.Component {
             }).then((data)=> {
                 return data.json()
             }).then((response)=>{
-                console.log(response)
-                lista = response
+                this.setState({lista: response[0]})
             }).catch(function(error){
-                callbackError(error)
+                console.log('Error al traer los pacientes')
             })
         })
     }
 
     _keyExtractor = (item, index) => item.CodPaciente.toString();
+
     render(){
         return (
             <View style={styles.container}>
                 <FlatList
-                     data={lista}
+                     data={this.state.lista}
                      keyExtractor={this._keyExtractor}
-                     renderItem={({item}) => <Paciente nombre={item.Nombre} apellidos ={item.Apellidos}></Paciente>}
-                >
-
+                     renderItem={({item}) => <Paciente nombre={item.Nombre} apellidos ={item.Apellidos}></Paciente>}>
                 </FlatList>
             </View>
         )
