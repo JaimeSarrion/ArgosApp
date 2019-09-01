@@ -6,11 +6,13 @@ import {
 import LoginForm from './src/components/LoginForm';
 import MenuPrincipal from './src/components/MenuPrincipal';
 import RegistroForm from './src/components/RegistroForm'
+import ListadoPacientes from './src/components/ListadoPacientes'
 
 const AppNavigator = createStackNavigator({
   LoginFormScreen: {screen: LoginForm},
   MenuPrincipalScreen: {screen: MenuPrincipal},
   RegistroFormScreen: {screen: RegistroForm},
+  ListadoPacientesScreen: {screen: ListadoPacientes}
 },
   {
     defaultNavigationOptions: {
