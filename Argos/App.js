@@ -14,7 +14,7 @@ const AppNavigator = createStackNavigator({
   RegistroFormScreen: {screen: RegistroForm},
   ListadoPacientesScreen: {screen: ListadoPacientes}
 },
-  {
+  { 
     defaultNavigationOptions: {
       headerTintColor: '#FFFF',
       headerStyle: {
