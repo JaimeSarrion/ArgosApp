@@ -33,6 +33,8 @@ class MenuPrincipal extends React.Component {
                         // the value of date key kas to be an empty array []. If there exists no value for date key it is
                         // considered that the date in question is not yet loaded
                         items={{
+                            '2019-09-09': [{ text: 'Presentacion del TFG' }],
+                            '2019-09-10': [{ text: 'Recoger analisis de radiologia' }],
                             '2019-09-22': [{ text: 'Revisar analisis del paciente Kidd' }],
                             '2019-09-23': [{ text: 'Cita con el odontologo' }],
                             '2019-09-24': [],

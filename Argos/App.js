@@ -7,12 +7,17 @@ import LoginForm from './src/components/LoginForm';
 import MenuPrincipal from './src/components/MenuPrincipal';
 import RegistroForm from './src/components/RegistroForm'
 import ListadoPacientes from './src/components/ListadoPacientes'
+import DetallePaciente from './src/components/DetallePaciente'
+import Paciente from './src/components/Paciente'
+
 
 const AppNavigator = createStackNavigator({
   LoginFormScreen: {screen: LoginForm},
   MenuPrincipalScreen: {screen: MenuPrincipal},
   RegistroFormScreen: {screen: RegistroForm},
-  ListadoPacientesScreen: {screen: ListadoPacientes}
+  ListadoPacientesScreen: {screen: ListadoPacientes},
+  DetallePacienteScreen: {screen: DetallePaciente},
+  PacienteScreen: {screen: Paciente}
 },
   { 
     defaultNavigationOptions: {

@@ -6,21 +6,22 @@ import {
     AsyncStorage,
     View,
     FlatList,
+    TouchableNativeFeedback
 } from 'react-native';
 
-const lista=[];
+const lista = [];
 
 class ListadoPacientes extends React.Component {
 
     static navigationOptions = {
         title: 'Listado de pacientes',
-        headerTitleStyle:{
+        headerTitleStyle: {
             fontWeight: 'bold',
             color: 'black',
         }
     };
 
-    constructor(props){
+    constructor(props) {
         super(props)
         this.state = {
             uri: 'http://jaimesarrion.freemyip.com:10000',
@@ -28,21 +29,21 @@ class ListadoPacientes extends React.Component {
         }
     }
 
-    componentWillMount(){
-        AsyncStorage.getItem('user').then((data)=>{
+    componentWillMount() {
+        AsyncStorage.getItem('user').then((data) => {
             let user = JSON.parse(data)
-            fetch(this.state.uri + '/pacientes',{
+            fetch(this.state.uri + '/pacientes', {
                 method: 'GET',
                 headers: {
-                    'authorization' : user.token 
+                    'authorization': user.token
                 },
                 timeout: 5000,
                 retries: 0
-            }).then((data)=> {
+            }).then((data) => {
                 return data.json()
-            }).then((response)=>{
-                this.setState({lista: response[0]})
-            }).catch(function(error){
+            }).then((response) => {
+                this.setState({ lista: response[0] })
+            }).catch(function (error) {
                 console.log('Error al traer los pacientes')
             })
         })
@@ -50,22 +51,29 @@ class ListadoPacientes extends React.Component {
 
     _keyExtractor = (item, index) => item.CodPaciente.toString();
 
-    render(){
+    render() {
         return (
             <View style={styles.container}>
                 <FlatList
-                     data={this.state.lista}
-                     keyExtractor={this._keyExtractor}
-                     renderItem={({item}) => <Paciente nombre={item.Nombre} apellidos ={item.Apellidos}></Paciente>}>
+                    data={this.state.lista}
+                    keyExtractor={this._keyExtractor}
+                    renderItem={({ item }) =>
+                        <Paciente
+                            propiedades={this.props}
+                            id={item.CodPaciente}
+                            nombre={item.Nombre}
+                            apellidos={item.Apellidos}
+                            calle={item.calle}
+                            observaciones={item.observaciones}
+                            telefono={item.telefono}></Paciente>}>
                 </FlatList>
             </View>
         )
     }
-
 }
 
 const styles = StyleSheet.create({
-    container:{
+    container: {
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
