@@ -238,7 +238,7 @@ const styles = StyleSheet.create({
         alignSelf: 'stretch',
         padding: 20,
         alignItems:'center',
-        backgroundColor: '#fbd37e',
+        backgroundColor: '#3ED07B',
     }
 
 });
