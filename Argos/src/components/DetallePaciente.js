@@ -24,6 +24,9 @@ class DetallePaciente extends React.Component {
     componentWillMount() {
         this.setState({ paciente: this.props.navigation.state.params.paciente })
     }
+    componentDidMount(){
+        console.log(this.state.paciente)
+    }
     render() {
         return (
             <View style={styles.container}>
@@ -42,20 +45,20 @@ class DetallePaciente extends React.Component {
                     </View>
                 </View>
                 <View style={styles.body}>
-                    <View style={flexDirection = "row"}>
-                        <TouchableHighlight>
-                            <Text>BPM</Text>
+                    <View style={styles.combo}>
+                        <TouchableHighlight style={styles.boton}>
+                            <Text>BPM:135</Text>
                         </TouchableHighlight>
-                        <TouchableHighlight>
-                            <Text>Pasos</Text>
+                        <TouchableHighlight style={styles.boton}>
+                            <Text>Pasos:7892</Text>
                         </TouchableHighlight>
                     </View>
-                    <View style={flexDirection = "row"}>
-                        <TouchableHighlight>
-                            <Text>Temperatura</Text>
-                        </TouchableHighlight>
-                        <TouchableHighlight>
-                            <Text>Oxigeno</Text>
+                    <View style={styles.combo}>
+                        <TouchableHighlight style={styles.boton}>
+                            <Text>Temp:34ºC</Text>
+                        </TouchableHighlight >
+                        <TouchableHighlight style={styles.boton}>
+                            <Text>O2: 95 SpO2</Text>
                         </TouchableHighlight>
                     </View>
                 </View>
@@ -94,13 +97,27 @@ const styles = StyleSheet.create({
         flexDirection: "row"
     },
     body: {
-        backgroundColor: 'white'
+        
     },
     boton: {
-
+        padding: 10,
+        margin: 5,
+        width: 135,
+        height: 60,
+        alignItems: 'center',
+        justifyContent:'center',
+        backgroundColor: '#3ED07B',
+    },
+    combo: {
+        flexDirection: "row",
+        flexWrap:"wrap"
     },
     footer: {
-        backgroundColor: "grey"
+        flex: 1,
+        backgroundColor: "whitesmoke",
+        borderRadius: 10,
+        borderWidth: 1,
+        marginBottom: 5,
     }
 })
 module.exports = DetallePaciente

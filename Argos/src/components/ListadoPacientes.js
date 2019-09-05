@@ -63,9 +63,9 @@ class ListadoPacientes extends React.Component {
                             id={item.CodPaciente}
                             nombre={item.Nombre}
                             apellidos={item.Apellidos}
-                            calle={item.calle}
-                            observaciones={item.observaciones}
-                            telefono={item.telefono}></Paciente>}>
+                            calle={item.Calle}
+                            observaciones={item.Observaciones}
+                            telefono={item.Telefono}></Paciente>}>
                 </FlatList>
             </View>
         )
