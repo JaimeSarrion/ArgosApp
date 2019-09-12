@@ -4,7 +4,7 @@
 
 **Introducción**
  
-Esta es la aplicación presentada como TFG(Trabajo de final de grado) en la [Universidad de Alicante](https://www.ua.es/). Lo que se ha querido realizar es un sistema de monitorización para personas en riesgo. Esto proyecto tiene partes de Hardware y Software. Además, hay dos repositorios más donde se encuentra el código para el hardware, y el codigo para la API.
+Esta es la aplicación presentada como TFG(Trabajo de final de grado) en la [Universidad de Alicante](https://www.ua.es/). Lo que se ha querido realizar es un sistema de monitorización para personas en riesgo. Este, es un prototipo que mantiene a una persona monitorizada 24 horas con una serie de sensores, como, por ejemplo, un sensor de ritmo cardiaco. Este sensor, se encuentra conectado a una placa que utiliza una nueva tecnología de comunicación llamada [LoRa](https://lorawan.es/). Esta placa, a su vez, se comunica con otra similar, que actúa como Servidor y envía los datos a la API, alojada en una Raspberry Pi. Por último, tengo un cliente móvil, que consume la API, en el cual puedes ver los datos que está recogiendo el sensor. Además, hay dos repositorios más donde se encuentra el código para el hardware, y el código para la API:
 
 + [Repositorio API](https://github.com/JaimeSarrion/ArgosAPI)
 + [Repositorio Hardware](https://github.com/JaimeSarrion/ArgosHardware)
@@ -37,15 +37,6 @@ Lo que podrás realizar en esta aplicación:
 
 <img width=50% height=40% src="/Argos/src/images/ArquitecturaTFG.png">
 
-# Autores
-
-- [Jaime Sarrión](www.linkedin.com/in/jaime-sarrion-sahuquillo)
-
-# Licencias
-
-Este proyecto está bajo la licencia GNU GPL v3 - revisa  [LICENSE](https://es.wikipedia.org/wiki/GNU_General_Public_License)  para ver más detalles.
-
-
 ## Historias de usuario
 
 
@@ -60,7 +51,7 @@ Este proyecto está bajo la licencia GNU GPL v3 - revisa  [LICENSE](https://es.w
 ### Login
 <img width=50% height=40% src="/Argos/src/images/20190911_191306.jpg">
 
-### Menu principal
+### Menú principal
 
 <img width=50% height=40% src="/Argos/src/images/20190911_191252.jpg">
 
@@ -72,4 +63,12 @@ Este proyecto está bajo la licencia GNU GPL v3 - revisa  [LICENSE](https://es.w
 
 ### Detalles del paciente
 <img width=50% height=40% src="Argos/src/images/20190911_191117.jpg">
+
+# Autores
+
+- [Jaime Sarrión](www.linkedin.com/in/jaime-sarrion-sahuquillo)
+
+# Licencias
+
+Este proyecto está bajo la licencia GNU GPL v3 - revisa  [LICENSE](https://es.wikipedia.org/wiki/GNU_General_Public_License)  para ver más detalles.
 
